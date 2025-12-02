@@ -1,0 +1,23 @@
+seed: 12345
+
+model_config:
+  num_heads: 4
+  num_layers: 4
+  embedding_dim: 32
+  apply_post_ln: true
+  apply_qk_layernorm: false
+  use_causal_mask: false
+  positional_encodings: "sinusoid"
+  widening_factor: 4
+
+train_config:
+  learning_rate: 0.0001
+  max_grad_norm: 1.0
+  num_steps: 10000
+  ckpt_frequency: 2000
+  ckpt_max_to_keep: 3
+  save_frequency: 2000
+  log_frequency: 1
+  worker_count: 0
+  batch_size: 64
+  num_eval_data: 256

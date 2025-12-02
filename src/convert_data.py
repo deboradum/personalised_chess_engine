@@ -31,6 +31,10 @@ def parse_games(pgn_path: str, username: str, data_accumulator: list[Tuple[str, 
             if game is None:
                 break
 
+            variant = game.headers.get("Variant", "Standard")
+            if variant != "Standard":
+                continue
+
             user_color = get_user_color(game.headers, username)
             # Skip games where the specified user is not found
             if user_color is None:
@@ -46,7 +50,7 @@ def parse_games(pgn_path: str, username: str, data_accumulator: list[Tuple[str, 
                 board.push(move)
 
 
-def save_data(data: list[Tuple[str, str]], split: Tuple[float, float] = (0.8, 0.2)):
+def save_data(data: list[Tuple[str, str]], username: str, split: Tuple[float, float] = (0.8, 0.2)):
     assert sum(split) == 1, "sum of data split is not 1."
     os.makedirs("../data/train/", exist_ok=True)
     os.makedirs("../data/test/", exist_ok=True)
@@ -64,13 +68,13 @@ def save_data(data: list[Tuple[str, str]], split: Tuple[float, float] = (0.8, 0.
     train_data = data[:train_items]
     test_data = data[train_items:]
 
-    train_output_path = "../data/train/personal_cloning_data.bag"
+    train_output_path = f"../data/train/{username}_personal_cloning_data.bag"
     with bagz.BagWriter(train_output_path) as train_writer:
         for fen, move_uci in train_data:
             encoded_bytes = bc_coder.encode((fen.strip(), move_uci.strip()))
             train_writer.write(encoded_bytes)
 
-    test_output_path = "../data/test/personal_cloning_data.bag"
+    test_output_path = f"../data/test/{username}_personal_cloning_data.bag"
     with bagz.BagWriter(test_output_path) as test_writer:
         for fen, move_uci in test_data:
             encoded_bytes = bc_coder.encode((fen.strip(), move_uci.strip()))
@@ -95,5 +99,5 @@ if __name__ == "__main__":
     if args.remove_duplicates:
         all_data = list(set(all_data))
 
-    save_data(all_data, tuple(args.split))
+    save_data(all_data, args.username, tuple(args.split))
     print(f"Saved {len(all_data)} positions")

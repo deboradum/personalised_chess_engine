@@ -19,8 +19,8 @@ import dataclasses
 from typing import Literal
 
 
-PolicyType = Literal['action_value', 'state_value', 'behavioral_cloning']
-POLICY_TYPES = ['action_value', 'state_value', 'behavioral_cloning']
+PolicyType = Literal['action_value', 'state_value', 'behavioral_cloning', 'personal_cloning']
+POLICY_TYPES = ['action_value', 'state_value', 'behavioral_cloning', 'personal_cloning']
 
 
 @dataclasses.dataclass(kw_only=True)
@@ -43,6 +43,8 @@ class DataConfig:
   split: Literal['train', 'test']
   # The policy used to create the dataset.
   policy: PolicyType
+  # The username to clone.
+  username: str | None = None
   # The number of records to read from the dataset (can be useful when, e.g.,
   # the dataset does not fit into memory).
   num_records: int | None = None

@@ -22,11 +22,11 @@ import grain.python as pygrain
 import jax
 import numpy as np
 
-from searchless_chess.src import bagz
-from searchless_chess.src import config as config_lib
-from searchless_chess.src import constants
-from searchless_chess.src import tokenizer
-from searchless_chess.src import utils
+from personalised_chess_engine.src import bagz
+from personalised_chess_engine.src import config as config_lib
+from personalised_chess_engine.src import constants
+from personalised_chess_engine.src import tokenizer
+from personalised_chess_engine.src import utils
 
 
 def _process_fen(fen: str) -> np.ndarray:
@@ -125,16 +125,21 @@ _TRANSFORMATION_BY_POLICY = {
     'behavioral_cloning': ConvertBehavioralCloningDataToSequence,
     'action_value': ConvertActionValueDataToSequence,
     'state_value': ConvertStateValueDataToSequence,
+    'personal_cloning': ConvertBehavioralCloningDataToSequence,
 }
 
 
 # Follows the base_constants.DataLoaderBuilder protocol.
 def build_data_loader(config: config_lib.DataConfig) -> pygrain.DataLoader:
   """Returns a data loader for chess from the config."""
+  if config.policy == "personal_cloning":
+    path = f'../data/{config.split}/{config.username}_{config.policy}_data.bag'
+  else:
+    path = f'../data/{config.split}/{config.policy}_data.bag'
   data_source = bagz.BagDataSource(
       os.path.join(
           os.getcwd(),
-          f'../data/{config.split}/{config.policy}_data.bag',
+          path,
       ),
   )
 

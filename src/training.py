@@ -26,11 +26,12 @@ from jax.experimental import mesh_utils
 import jax.random as jrandom
 import numpy as np
 import optax
+from tqdm import tqdm
 
-from searchless_chess.src import config as config_lib
-from searchless_chess.src import constants
-from searchless_chess.src import training_utils
-from searchless_chess.src import transformer
+from personalised_chess_engine.src import config as config_lib
+from personalised_chess_engine.src import constants
+from personalised_chess_engine.src import training_utils
+from personalised_chess_engine.src import transformer
 
 
 def train(
@@ -95,7 +96,7 @@ def train(
     logging.info('Initializing the checkpoint manager.')
     checkpoint_dir = os.path.join(
         os.getcwd(),
-        f'../checkpoints/local/{train_config.data.policy}',
+        f'../checkpoints/local/{train_config.data.username}_{train_config.data.policy}',
     )
     checkpoint_manager = training_utils.get_checkpoint_manager(
         ckpt_frequency=train_config.ckpt_frequency,
@@ -120,7 +121,7 @@ def train(
       )
 
   # Main training loop.
-  for step in range(latest_step, train_config.num_steps + 1):
+  for step in tqdm(range(latest_step, train_config.num_steps + 1), desc="Training model"):
     if train_config.ckpt_frequency is not None:
       if step % train_config.ckpt_frequency == 0:
         logging.info('Checkpointing step %i.', step)

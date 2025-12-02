@@ -28,12 +28,12 @@ import haiku as hk
 import numpy as np
 import scipy.stats
 
-from searchless_chess.src import bagz
-from searchless_chess.src import config as config_lib
-from searchless_chess.src import constants
-from searchless_chess.src import utils
-from searchless_chess.src.engines import engine
-from searchless_chess.src.engines import neural_engines
+from personalised_chess_engine.src import bagz
+from personalised_chess_engine.src import config as config_lib
+from personalised_chess_engine.src import constants
+from personalised_chess_engine.src import utils
+from personalised_chess_engine.src.engines import engine
+from personalised_chess_engine.src.engines import neural_engines
 
 
 @dataclasses.dataclass
@@ -351,6 +351,7 @@ def build_evaluator(
       'action_value': ActionValueChessStaticMetricsEvaluator,
       'state_value': StateValueChessStaticMetricsEvaluator,
       'behavioral_cloning': BCChessStaticMetricsEvaluator,
+      'personal_cloning': BCChessStaticMetricsEvaluator,
   }
   return evaluator_by_policy[config.policy](
       predictor=predictor,
