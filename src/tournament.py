@@ -28,9 +28,9 @@ import chess.engine
 import chess.pgn
 import numpy as np
 
-from searchless_chess.src.engines import constants
-from searchless_chess.src.engines import engine
-from searchless_chess.src.engines import stockfish_engine
+from personalised_chess_engine.src.engines import constants
+from personalised_chess_engine.src.engines import engine
+from personalised_chess_engine.src.engines import stockfish_engine
 
 
 _NUM_GAMES = flags.DEFINE_integer(

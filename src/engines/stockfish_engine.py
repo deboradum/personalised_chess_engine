@@ -19,7 +19,7 @@ import os
 
 import chess
 
-from searchless_chess.src.engines import engine
+from personalised_chess_engine.src.engines import engine
 
 
 class StockfishEngine(engine.Engine):

@@ -13,3 +13,6 @@ orbax-checkpoint
 pandas
 scipy
 typing-extensions
+
+dacite
+tqdm
